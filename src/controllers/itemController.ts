@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import * as itemService from '../services/itemService';
+import logger from '../config/logger';
 
 export const createItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const item = await itemService.createItem(req.body);
         res.status(201).json(item);
-    } catch (error) {
+        logger.info('Item created successfully');
+    } catch (error: any) {
+        logger.error(`Error creating item: ${error?.message}`);
         next(error);
     }
 };
