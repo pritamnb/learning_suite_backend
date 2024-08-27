@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { runSparkAdaCode } from '../controllers/sparkAdaController';
-import multer from 'multer';
+import { SparkAdaController } from '../controllers/sparkAdaController';
+import { uploadMiddleware } from '../middleware/uploadMiddleware';
+
+const sparkAdaController = new SparkAdaController();
 
 const router = Router();
-// Configure multer for file uploads
-const upload = multer({ dest: 'uploads/' });
-
-router.post('/run-spark', upload.fields([{ name: 'specFile', maxCount: 1 }, { name: 'bodyFile', maxCount: 1 }]), runSparkAdaCode);
+router.post('/prove', uploadMiddleware, sparkAdaController.prove.bind(sparkAdaController));
+router.post('/examine', uploadMiddleware, sparkAdaController.examine.bind(sparkAdaController));
 
 export default router;
