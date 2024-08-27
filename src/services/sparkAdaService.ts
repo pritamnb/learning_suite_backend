@@ -16,8 +16,8 @@ export class SparkAdaService {
             // Remove uploaded and generated files
             console.log('this.adaSourceDir : ', this.adaSourceDir)
             await fs.rm(this.adaSourceDir, { recursive: true, force: true });
-            await fs.rm(path.resolve(__dirname, '../ada_project/bin'), { recursive: true, force: true });
-            await fs.rm(path.resolve(__dirname, '../ada_project/obj'), { recursive: true, force: true });
+            await fs.rm(path.resolve(__dirname, '../spark_ada_project/bin'), { recursive: true, force: true });
+            await fs.rm(path.resolve(__dirname, '../spark_ada_project/obj'), { recursive: true, force: true });
             logger.info(`Cleaned up ${this.adaSourceDir} directory.`);
             await fs.mkdir(this.adaSourceDir, { recursive: true });
         } catch (error) {

@@ -7,8 +7,11 @@ import adaRoutes from './routes/adaRoutes';
 import { errorHandler } from './middleware/errorHandler';
 import connectDB from './config/database';
 import cors from 'cors';
-const app = express();
+import { setupAdaProject } from './utils/projectSetup';
 
+const app = express();
+// Initialize the SPARK Ada project setup
+setupAdaProject();
 // Connect to the database
 connectDB();
 // Cross origin resource sharing 
