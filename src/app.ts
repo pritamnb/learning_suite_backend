@@ -1,21 +1,20 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import itemRoutes from './routes/itemRoutes';
 import sparkRoutes from './routes/sparkRoutes';
+import adaRoutes from './routes/adaRoutes';
 
-import { errorHandler } from './middlewares/errorHandler';
+import { errorHandler } from './middleware/errorHandler';
 import connectDB from './config/database';
 import cors from 'cors';
-const app = express();
+import { setupAdaProject } from './utils/projectSetup';
 
+const app = express();
+// Initialize the SPARK Ada project setup
+setupAdaProject();
 // Connect to the database
 connectDB();
-// CORS configuration
-// const corsOptions = {
-//     origin: '*',//  allowing all 
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials: true,
-// };
+// Cross origin resource sharing 
 const allowedOrigins = ['*', 'http://localhost:3000'];
 
 const options: cors.CorsOptions = {
@@ -33,7 +32,9 @@ app.get('/hello', (req, res) => {
     })
 })
 app.use('/api', itemRoutes);
+app.use('/api', adaRoutes);
 app.use('/api', sparkRoutes);
+
 // Error handler middleware should be the last middleware
 app.use(errorHandler);
 
