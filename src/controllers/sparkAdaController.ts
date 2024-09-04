@@ -20,7 +20,6 @@ export class SparkAdaController {
             try {
                 const result = await this.sparkAdaService.prove(specFile, bodyFile, level);
                 console.log("result :", result)
-                // res.json({ message: 'Prove successful', result });
                 res.send({ message: 'Prove successful', output: result });
 
             } catch (error) {
@@ -44,7 +43,6 @@ export class SparkAdaController {
                 const result = await this.sparkAdaService.examine(specFile, bodyFile, reportAll, level);
                 console.log("result :", result)
 
-                // res.json({ message: 'Examine successful', result });
                 res.send({ message: 'Examine successful', output: result });
             } catch (error) {
                 logger.error(`Error during processing: ${error}`);
