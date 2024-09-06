@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: nodejs-ts-learning-suite
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://127:0:0:0:27017/learning_suite
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: "npm run dev" # Uses nodemon for hot-reloading in development
+
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
