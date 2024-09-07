@@ -5,11 +5,13 @@ on:
   # check
   pull_request:
     branches:
-      - [main, dev]
+      - main
+      - dev
   # Triggers the workflow on push events to the 'dev' branch (e.g., merges)
   push:
     branches:
-      - [main,dev]
+      - main
+      - dev
 
 jobs:
   test:
