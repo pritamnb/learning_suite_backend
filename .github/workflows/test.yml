@@ -1,0 +1,39 @@
+name: Run Unit Tests
+
+on:
+  # Triggers the workflow on pull requests to the 'dev' branch
+  pull_request:
+    branches:
+      - dev
+  # Triggers the workflow on push events to the 'dev' branch (e.g., merges)
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Specify the Node.js version you are using
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: npm test
+
+      # Step 5: Generate coverage report (Optional)
+      - name: Generate coverage report
+        run: npm run test:coverage
+
