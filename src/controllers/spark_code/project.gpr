@@ -1,5 +1,0 @@
-project Project is
-     for Source_Dirs use ("G:\Projects\Swansea\dissertation\learning_suite_backend\src\controllers\spark_code");
-     for Object_Dir use "G:\Projects\Swansea\dissertation\learning_suite_backend\src\controllers\spark_code/obj";
-     for Main use ("main_prog.adb");
-  end Project;

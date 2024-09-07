@@ -25,20 +25,6 @@ export class SparkAdaService {
             logger.error(`Error during cleanup: ${error}`);
         }
     }
-    // private runCommand(command: string): Promise<string> {
-    //     return new Promise((resolve, reject) => {
-    //         exec(command, (error, stdout, stderr) => {
-    //             if (error) {
-    //                 logger.error(`Command failed: ${stderr}`);
-    //                 reject(stderr);
-    //             } else {
-    //                 console.log("stdout :", stdout)
-
-    //                 resolve(stdout);
-    //             }
-    //         });
-    //     });
-    // }
 
     private runCommand(command: string): Promise<string> {
         return new Promise((resolve, reject) => {
