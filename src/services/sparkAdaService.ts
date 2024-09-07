@@ -3,6 +3,7 @@ import path from 'path';
 import { config } from '../config/config';
 import logger from '../config/logger';
 import { promises as fs } from 'fs';
+import escape from 'shell-escape';
 export class SparkAdaService {
     private projectFile: string;
     private adaSourceDir: string;
@@ -24,21 +25,40 @@ export class SparkAdaService {
             logger.error(`Error during cleanup: ${error}`);
         }
     }
+    // private runCommand(command: string): Promise<string> {
+    //     return new Promise((resolve, reject) => {
+    //         exec(command, (error, stdout, stderr) => {
+    //             if (error) {
+    //                 logger.error(`Command failed: ${stderr}`);
+    //                 reject(stderr);
+    //             } else {
+    //                 console.log("stdout :", stdout)
+
+    //                 resolve(stdout);
+    //             }
+    //         });
+    //     });
+    // }
+
     private runCommand(command: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    logger.error(`Command failed: ${stderr}`);
-                    reject(stderr);
-                } else {
-                    console.log("stdout :", stdout)
+            // Escape the command to prevent injection attacks
+            const sanitizedCommand = escape(command.split(' '));
+            logger.info(`\n Executing command: ${sanitizedCommand}\n`);
 
+            exec(sanitizedCommand, (error, stdout, stderr) => {
+                if (error) {
+                    // Log the error and reject the promise
+                    logger.error(`Command failed: ${stderr}`);
+                    reject(new Error(`Command failed: ${stderr}`));
+                } else {
+                    // Log the output and resolve the promise
+                    logger.info(`Command output: ${stdout}`);
                     resolve(stdout);
                 }
             });
         });
     }
-
     public async prove(specFile: string, bodyFile: string, level: number): Promise<string> {
         try {
             const command = `gnatprove -P ${this.projectFile} --checks-as-errors --level=${level} --no-axiom-guard`;
