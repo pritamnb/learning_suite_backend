@@ -30,28 +30,6 @@ export class SparkAdaService {
         }
     }
 
-    // private runCommand(command: string): Promise<string> {
-    //     return new Promise((resolve, reject) => {
-    //         // Escape the command to prevent injection attacks
-    //         const sanitizedCommand = escape(command.split(' '));
-    //         logger.info(`\n Executing command: ${sanitizedCommand}\n`);
-
-    //         exec(sanitizedCommand, (error, stdout, stderr) => {
-    //             console.log('\n\n\nstdout :: \n\n', stdout);
-    //             resolve(stdout);
-    //             // if (error) {
-    //             //     // Log the error and reject the promise
-    //             //     logger.error(`Command failed: ${stderr}`);
-    //             //     reject(new Error(`Command failed: ${stderr}`));
-    //             // } else {
-    //             //     // Log the output and resolve the promise
-    //             //     logger.info(`Command output: ${stdout}`);
-    //             //     resolve(stdout);
-    //             // }
-    //         });
-    //     });
-    // }
-
     private runCommand(command: string, args: string[], timeout: number = 10000): Promise<string> {
         return new Promise((resolve, reject) => {
             const escapedCommand = escape([command, ...args]);
@@ -73,7 +51,7 @@ export class SparkAdaService {
 
             process.stderr.on('data', (data) => {
                 console.log('stderr:', data.toString());
-                output += data.toString(); // Append stderr to the output to capture everything printed to the terminal
+                output += data.toString();
             });
 
             process.on('close', (code) => {
@@ -88,12 +66,8 @@ export class SparkAdaService {
         });
     }
 
-    public async prove(specFile: string, bodyFile: string, level: number): Promise<string> {
+    public async prove(specFile: string | null, bodyFile: string | null, level: number): Promise<string> {
         try {
-            // const command = `gnatprove -P ${this.projectFile} --checks-as-errors --level=${level} --no-axiom-guard --report=all`;
-            // console.log("\n \ncommand :", command, '\n\n')
-            // const output = await this.runCommand(command);
-
             const command = 'gnatprove';
             const args = ['-P', this.projectFile, '--checks-as-errors', `--level=${level}`, '--no-axiom-guard'];
             const timeout = 10000;  // Timeout in milliseconds (10 seconds)
@@ -107,11 +81,8 @@ export class SparkAdaService {
         }
     }
 
-    public async examine(specFile: string, bodyFile: string, reportAll: boolean, level: number): Promise<string> {
+    public async examine(specFile: string | null, bodyFile: string | null, reportAll: boolean, level: number): Promise<string> {
         try {
-            // const command = reportAll
-            //     ? `gnatprove -P ${this.projectFile} --checks-as-errors --level=${level} --no-axiom-guard --mode=flow --report=all`
-            //     : `gnatprove -P ${this.projectFile} --checks-as-errors --level=${level} --no-axiom-guard --mode=flow`;
             const command = 'gnatprove';
             const args = reportAll
                 ? ['-P', this.projectFile, '--checks-as-errors', `--level=${level}`, '--no-axiom-guard', '--mode=flow', '--report=all']

@@ -11,18 +11,21 @@ export class SparkAdaController {
 
     public async prove(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-            const specFile = files.specFile[0].filename;
-            const bodyFile = files.bodyFile[0].filename;
             const level = parseInt(req.body.verificationLevel, 10) || 0;
+
+            // Check for the presence of specFile and bodyFile
+            const specFile = files.specFile && files.specFile.length > 0 ? files.specFile[0].filename : null;
+            const bodyFile = files.bodyFile && files.bodyFile.length > 0 ? files.bodyFile[0].filename : null;
+
+            if (!specFile) {
+                res.status(400).send({ error: 'Specification file is required.' });
+            }
 
             try {
                 const result = await this.sparkAdaService.prove(specFile, bodyFile, level);
-                console.log("result :", result)
-                // res.json({ message: 'Prove successful', result });
+                console.log("result :", result);
                 res.send({ message: 'Prove successful', output: result });
-
             } catch (error) {
                 logger.error(`Error during processing: ${error}`);
                 res.status(500).send({ error: 'Error during processing', details: error });
@@ -35,16 +38,20 @@ export class SparkAdaController {
     public async examine(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-            const specFile = files.specFile[0].filename;
-            const bodyFile = files.bodyFile[0].filename;
             const level = parseInt(req.body.verificationLevel, 10) || 0;
             const reportAll = req.query.report === 'all';
 
+            // Check for the presence of specFile and bodyFile
+            const specFile = files.specFile && files.specFile.length > 0 ? files.specFile[0].filename : null;
+            const bodyFile = files.bodyFile && files.bodyFile.length > 0 ? files.bodyFile[0].filename : null;
+
+            if (!specFile) {
+                res.status(400).send({ error: 'Specification file is required.' });
+            }
+
             try {
                 const result = await this.sparkAdaService.examine(specFile, bodyFile, reportAll, level);
-                console.log("result :", result)
-
-                // res.json({ message: 'Examine successful', result });
+                console.log("result :", result);
                 res.send({ message: 'Examine successful', output: result });
             } catch (error) {
                 logger.error(`Error during processing: ${error}`);
