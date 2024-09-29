@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { exec } from 'child_process';
-// import { writeFile, unlink } from 'fs/promises';
 import path from 'path';
 import fs from 'fs';
 import logger from '../config/logger';

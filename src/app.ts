@@ -1,19 +1,15 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import itemRoutes from './routes/itemRoutes';
 import sparkRoutes from './routes/sparkRoutes';
 import adaRoutes from './routes/adaRoutes';
 
 import { errorHandler } from './middleware/errorHandler';
-import connectDB from './config/database';
 import cors from 'cors';
 import { setupAdaProject } from './utils/projectSetup';
 
 const app = express();
 // Initialize the SPARK Ada project setup
 setupAdaProject();
-// Connect to the database
-connectDB();
 // Cross origin resource sharing 
 const allowedOrigins = ['*', 'http://localhost:3000'];
 
@@ -31,7 +27,6 @@ app.get('/hello', (req, res) => {
         message: "Hello from Spark Ada learning suite!"
     })
 })
-app.use('/api', itemRoutes);
 app.use('/api', adaRoutes);
 app.use('/api', sparkRoutes);
 
