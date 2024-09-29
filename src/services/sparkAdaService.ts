@@ -88,7 +88,6 @@ export class SparkAdaService {
                 ? ['-P', this.projectFile, '--checks-as-errors', `--level=${level}`, '--no-axiom-guard', '--mode=flow', '--report=all']
                 : ['-P', this.projectFile, '--checks-as-errors', `--level=${level}`, '--no-axiom-guard', '--mode=flow'];
             const timeout = 10000;  // Timeout in milliseconds (10 seconds)
-            // const output = await this.runCommand(command);
 
             const output = await this.runCommand(command, args, timeout);
             await this.cleanUp();  // Clean up after examining
